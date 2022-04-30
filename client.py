@@ -6,6 +6,7 @@ import os
 import subprocess
 import shlex
 from math import trunc
+import argparse
 
 def subrun(com, capture_output=False):
     stdout = None if not capture_output else subprocess.PIPE
@@ -32,7 +33,10 @@ def train(master_ip, world_size, job_id, rank):
     #assert(subrun('curl https://tkhaniitr-u3f2l0793la7pe20.socketxp.com/downloads/ -o outFile.zip').returncode == 0)
     dir = "file_store/jobid"+str(job_id)+"/"
     assert(subrun("unzip "+dir+"outFile.zip").returncode == 0)
-    run_train = 'python main.py --master-ip '+master_ip + ' --num-nodes '+str(world_size)+' --rank '+str(rank)
+    directory = os.path.join(os.getcwd()+"/file_store/jobid/"+str(jobid)+"/", "rank"+str(rank))
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    run_train = 'python main.py --master-ip '+master_ip + ' --num-nodes '+str(world_size)+' --rank '+ str(rank) +' --checkpoint-dir ' + directory
     assert(subrun(run_train).returncode == 0)
 
 while(True):
