@@ -27,17 +27,22 @@ start_training = False
 def train(master_ip, world_size, job_id, rank):
     print(master_ip)
     print(world_size)
-    print(job_id)
+    print("job id is "+job_id)
     print(rank)
     #resp = requests.get(url+ '/downloads/', headers=header)
     #assert(subrun('curl https://tkhaniitr-u3f2l0793la7pe20.socketxp.com/downloads/ -o outFile.zip').returncode == 0)
     dir = "file_store/jobid"+str(job_id)+"/"
     assert(subrun("unzip "+dir+"outFile.zip").returncode == 0)
-    directory = os.path.join(os.getcwd()+"/file_store/jobid/"+str(jobid)+"/", "rank"+str(rank))
+    directory = os.path.join(os.getcwd()+"/file_store/jobid/"+str(job_id)+"/", "rank"+str(rank))
     if not os.path.exists(directory):
         os.makedirs(directory)
     run_train = 'python main.py --master-ip '+master_ip + ' --num-nodes '+str(world_size)+' --rank '+ str(rank) +' --checkpoint-dir ' + directory
     assert(subrun(run_train).returncode == 0)
+    payload = {'user_id': user, 'job_id': job_id}
+    header = {"Content-type": "application/json"}
+    response = requests.post(url+"doneJob/", data = json.dumps(payload), headers=header)
+    print(response)
+    start_training = True
 
 while(True):
     #print(cnt)
