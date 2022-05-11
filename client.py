@@ -21,13 +21,14 @@ print(ip)
 parser = argparse.ArgumentParser()
 parser.add_argument('--duration', '-d', required=True, type=int)
 parser.add_argument('--url', '-u', required=True)
+parser.add_argument('--spec', '-s', required=False, type=int, default=1)
 args = parser.parse_args()
 url = args.url
 duration = args.duration
 if(duration <= 1):
     print("duration greater than 1 minute and preferably atleast 10 minutes")
     sys.exit(1)
-payload = {'spec': 'ok', 'minutes': str(duration), 'IP': ip}
+payload = {'spec': str(spec), 'minutes': str(duration), 'IP': ip}
 response = requests.post(url+"register/", data = json.dumps(payload), headers=header)
 user = response.json()
 print(user)
