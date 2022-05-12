@@ -140,8 +140,8 @@ class DatasetManager(object):
 #                transforms.Resize(299),		#only use with inception
                 transforms.RandomHorizontalFlip(),
                 transforms.ToTensor(),
-                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),])
-#		transforms.Normalize((0.4914, 0.4822, 0.4465), (0.247, 0.243, 0.261)),])
+                # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),])
+        		transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),])
               return datasets.CIFAR10(
                homedir+'/data',
                train=True,
@@ -151,8 +151,8 @@ class DatasetManager(object):
               transforms_test = transforms.Compose([
 #                transforms.Resize((299,299)),			#only use with inception
                 transforms.ToTensor(),
-                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),])
-#		transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),])
+                # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),])
+        		transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),])
               return datasets.CIFAR10(
                 homedir+'/data',
                 train=False,

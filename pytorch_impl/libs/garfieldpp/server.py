@@ -115,7 +115,7 @@ class Server:
         self.model.train()
         self.optimizer.zero_grad()
         #Fast path
-        if num_wait_wrk == self.num_workers:
+        if False:
             def get_grad(fut):
                 return fut.wait()[1].to(self.device)
             pool_wrk = ThreadPool()
@@ -144,7 +144,7 @@ class Server:
             build_th = threading.Thread(target=self.build_graph, args=(iter_num,))
             build_th.start()
             while self.num_workers - grads.count(None) < num_wait_wrk:
-                sleep(1)
+                sleep(0.01)
             #now, I'm sure I have at least "num_wait_wrk" replies at least
             #let's remove all "None" values
             grads = [grad for grad in grads if grad is not None]

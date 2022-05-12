@@ -46,6 +46,8 @@ import argparse
 import sys
 import json
 import threading
+import torch.multiprocessing
+torch.multiprocessing.set_sharing_strategy('file_system')
 
 import garfieldpp
 from garfieldpp.worker import Worker
@@ -65,7 +67,7 @@ parser.add_argument("--master",
     default="",
     help="Master node in the deployment. This node takes rank 0, usually the first PS.")
 parser.add_argument("--rank",
-    type=int,
+    type=str,
     default=0,
     help="Rank of a process in a distributed setup.")
 parser.add_argument("--dataset",
@@ -106,7 +108,7 @@ parser.add_argument("--optimizer",
     help="Optimizer to use.")
 parser.add_argument("--opt_args",
     type=json.loads,
-    default={'lr':'0.1'},
+    default={'lr':'0.1', 'momentum': '0.9', 'weight_decay': '0.0005'},
     help="Optimizer arguments; passed in dict format, e.g., '{\"lr\":\"0.1\"}'")
 parser.add_argument("--num_iter",
     type=int,
@@ -135,7 +137,7 @@ FLAGS = parser.parse_args(sys.argv[1:])
 master = FLAGS.master
 assert len(master) > 0
 
-rank = FLAGS.rank
+rank = eval(FLAGS.rank)
 assert rank >= 0
 
 num_ps = FLAGS.num_ps
