@@ -1,0 +1,13 @@
++Group = "GRAD"
++Project = "AI_ROBOTICS"
++ProjectDescription = "Research Work"
++GPUJob = true 
+
+Universe        = vanilla
+Executable	= /u/anirudhs/miniconda3/envs/py39/bin/python
+Arguments	= client.py -d 180 -u http://darmok:5000/ --rank $(Process)
+Requirements 	= GTX1080Ti
+Log		    = $(Process).log
+Error		= $(Process).err
+Output		= $(Process).out
+Queue 10
